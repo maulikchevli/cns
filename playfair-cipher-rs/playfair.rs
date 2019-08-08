@@ -12,10 +12,10 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
 
     /*
     for i in 0..paired_plain_text.len() {
-        (r1, c1) = find_position(paired_plain_text[i], &table);
-        (r2, c2) = find_position(paired_plain_text[i+1], &table);
-    }
-    */
+    (r1, c1) = find_position(paired_plain_text[i], &table);
+    (r2, c2) = find_position(paired_plain_text[i+1], &table);
+}
+     */
 	  paired_plain_text.into_iter().collect()
 }
 
