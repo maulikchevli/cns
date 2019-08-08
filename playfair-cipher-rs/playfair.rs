@@ -1,5 +1,5 @@
 pub fn encrypt(plain_text: &String, key: &String) -> String {
-	  let table = generate_table(key, true);
+    let table = generate_table(key, true);
 
     for i in 0..5 {
         for j in 0..5 {
@@ -10,17 +10,15 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
 
     let paired_plain_text:Vec<char> = generate_paired_text(plain_text);
 
-    /*
     for i in 0..paired_plain_text.len() {
-    (r1, c1) = find_position(paired_plain_text[i], &table);
-    (r2, c2) = find_position(paired_plain_text[i+1], &table);
-}
-     */
-	  paired_plain_text.into_iter().collect()
+        (r1, c1) = find_position(paired_plain_text[i], &table);
+        (r2, c2) = find_position(paired_plain_text[i+1], &table);
+    }
+    paired_plain_text.into_iter().collect()
 }
 
 fn generate_table(key: &String, replaceItoJ: bool) -> [[char; 5]; 5] {
-	  let mut table_entries = key.to_uppercase() + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let mut table_entries = key.to_uppercase() + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     if replaceItoJ {
         table_entries = table_entries.replace("J", "I");
@@ -28,20 +26,20 @@ fn generate_table(key: &String, replaceItoJ: bool) -> [[char; 5]; 5] {
         table_entries = table_entries.replace("Q", "");
     }
 
-	  let mut char_entered = [false; 26];
-	  let mut table = [['A'; 5]; 5];
+    let mut char_entered = [false; 26];
+    let mut table = [['A'; 5]; 5];
 
-	  let mut i = 0;
-	  let mut j = 0;
+    let mut i = 0;
+    let mut j = 0;
 
-	  for c in table_entries.chars() {
-		    if char_entered[c as usize - 'A' as usize] == true {
-		    } else {
-			      table[i][j] = c;
-			      j = (j+1)%5;
-			      if j == 0 {
-				        i = (i + 1) % 5;
-			      }
+    for c in table_entries.chars() {
+        if char_entered[c as usize - 'A' as usize] == true {
+        } else {
+            table[i][j] = c;
+            j = (j+1)%5;
+            if j == 0 {
+                i = (i + 1) % 5;
+            }
 
             char_entered[c as usize - 'A' as usize] = true;
         }
