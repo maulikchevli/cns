@@ -50,6 +50,25 @@ fn encrypt_playfair() {
 }
 
 fn decrypt_playfair() {
-    println!("Dec");
+    let mut file_name = String::new();
+    println!("Enter filename:");
+    io::stdin().read_line(&mut file_name)
+        .expect("Could not read file name");
+    let file_name = file_name.trim();
+
+    use std::fs::File;
+    let mut f = File::open(file_name).expect("Unable to open file");
+    let mut cipher_text = String::new();
+    f.read_to_string(&mut cipher_text).unwrap();
+
+    let mut key = String::new();
+    println!("Enter Key :");
+    io::stdin().read_line(&mut key);
+    let key = key.trim().to_string();
+
+    println!("Cipher Text: \n{}", cipher_text);
+    println!("Key {}", key);
+
+    println!("plain : {} ", playfair::decrypt(&cipher_text, &key));
 }
 
