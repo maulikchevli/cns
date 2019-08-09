@@ -1,5 +1,5 @@
 pub fn encrypt(plain_text: &String, key: &String) -> String {
-    let table = generate_table(key, true);
+    let table: [[char; 5]; 5] = generate_table(key, true);
 
     for i in 0..5 {
         for j in 0..5 {
@@ -10,11 +10,31 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
 
     let paired_plain_text:Vec<char> = generate_paired_text(plain_text);
 
+    let mut cipher_text = String::new();
+
     for i in 0..paired_plain_text.len() {
-        (r1, c1) = find_position(paired_plain_text[i], &table);
-        (r2, c2) = find_position(paired_plain_text[i+1], &table);
+
+        // Skip two
+        if i % 2 != 0 {
+            continue
+        }
+
+        let p1 = find_position(paired_plain_text[i], &table);
+        let p2 = find_position(paired_plain_text[i+1], &table);
+
+        let (c1, c2) = find_substitute_position_enc(p1, p2);
+
+        cipher_text.push(table[c1.0][c1.1]);
+        cipher_text.push(table[c2.0][c2.1]);
     }
-    paired_plain_text.into_iter().collect()
+
+    println!("Paired Plain Text: ");
+    for x in paired_plain_text {
+        print!("{}", x);
+    }
+    println!();
+
+    cipher_text
 }
 
 fn generate_table(key: &String, replaceItoJ: bool) -> [[char; 5]; 5] {
@@ -67,5 +87,48 @@ fn generate_paired_text(plain_text: &String) -> Vec<char> {
     }
 
     paired_plain_text
+}
+
+fn find_position(char_to_find: char, table: &[[char; 5]; 5]) -> (usize, usize) {
+    for (i, row) in table.iter().enumerate() {
+        for (j, cell) in row.iter().enumerate() {
+            if *cell == char_to_find {
+                return (i, j);
+            }
+        }
+    }
+
+    (6, 6)
+}
+
+fn find_substitute_position_enc(p1: (usize, usize), p2: (usize, usize)) -> ((usize, usize), (usize, usize)) {
+    let mut c1: (usize, usize) = p1;
+    let mut c2: (usize, usize) = p2;
+
+    // If Letters are of same column
+    if p1.1 == p2.1 {
+        c1.0 = (p1.0 + 1) % 5;
+        c1.1 = p1.1;
+
+        c2.0 = (p2.0 + 1) % 5;
+        c2.1 = p2.1;
+    }
+    // Letters are of same row
+    else if p1.0 == p2.0 {
+        c1.0 = p1.0;
+        c1.1 = (p1.1 + 1) % 5;
+
+        c2.0 = p2.0;
+        c2.1 = (p2.1 + 1) % 5;
+    }
+    else {
+        c1.0 = p1.0;
+        c1.1 = p2.1;
+
+        c2.0 = p2.0;
+        c2.1 = p1.1;
+    }
+
+    (c1, c2)
 }
 
