@@ -67,10 +67,10 @@ pub fn decrypt(cipher_text: &String, key: &String) -> String {
     plain_text
 }
 
-fn generate_table(key: &String, replaceItoJ: bool) -> [[char; 5]; 5] {
+fn generate_table(key: &String, replace_i_to_j: bool) -> [[char; 5]; 5] {
     let mut table_entries = key.to_uppercase() + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    if replaceItoJ {
+    if replace_i_to_j {
         table_entries = table_entries.replace("J", "I");
     } else {
         table_entries = table_entries.replace("Q", "");
@@ -100,16 +100,20 @@ fn generate_table(key: &String, replaceItoJ: bool) -> [[char; 5]; 5] {
 fn generate_paired_text(plain_text: &String) -> Vec<char> {
     let mut paired_plain_text:Vec<char> = Vec::new();
     let mut previous_char: char = ' ';
+    let mut change = 0;
     for c in plain_text.to_uppercase().chars() {
         if c < 'A' || c > 'Z' {
             continue;
         }
 
         if c == previous_char {
-            paired_plain_text.push('X');
+            if change == 1 {
+                paired_plain_text.push('X');
+            }
         }
         paired_plain_text.push(c);
         previous_char = c;
+        change = (change + 1) % 2;
     }
 
     if paired_plain_text.len() % 2 == 1 {
