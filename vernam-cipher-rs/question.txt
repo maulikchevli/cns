@@ -1,0 +1,10 @@
+Implement Vernam cipher - Generate key, Read plain txt / cipher text (from file), Read key (from file),
+write output in file.
+Generate Key(s) - generate stream of 1's and 0's using Random Number Generator, group them and
+write as binary code in a file
+Read plain text - plain text (ASCII) from file can be first converted in binary code
+If your key is shorter than plain text - repeat the key
+Encryption: Plaintext XOR Key
+Write output - write cipher text in binary code in a file
+Decryption - Ciphertext XOR Key
+Write Output - Convert decrypted binary code in ASCII and write in a file

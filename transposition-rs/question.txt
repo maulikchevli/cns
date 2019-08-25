@@ -1,0 +1,6 @@
+1. Implement columnar transposition cipher.
+ a. Write a program for Encryption using key
+ b. Write a program for decryption using key
+2. Implement rail fence transposition cipher
+ a. Write a program for Encryption using key (depth)
+ b. Write a program for decryption using key (depth)

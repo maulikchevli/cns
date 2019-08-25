@@ -1,0 +1,6 @@
+Implement a menu driven program for 5X5 Playfair Cipher with following functions.
+
+1. Encrypt given plain text.
+2. Decrypt given cipher text.
+
+Note: In encryption, if both characters occur neither in the same line nor in the same column of key  matrix ->  Then the first character is replaced by the character that occurs in the same line and in the column in which the second character occurs.
