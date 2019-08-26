@@ -4,13 +4,6 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
     let key_len = key.len();
 
     let col_pbox: Vec<usize> = pbox_from_key(key);
-    for c in col_pbox.iter() {
-        print!("{} ",c);
-    }
-    println!();
-
-    let col = plain_text.len() / key_len;
-    println!("Column size: {}", col);
 
     let plain_vec: Vec<Vec<char>> = generate_vec(plain_text, key_len);
     for row in plain_vec.iter() {
@@ -19,6 +12,32 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
         }
         println!();
     }
+
+    let mut pbox: Vec<(usize, usize)> = Vec::new();
+    for (i, x) in col_pbox.iter().enumerate() {
+        pbox.push((i, *x));
+    }
+    pbox.sort_by_key(|a| a.1);
+
+    /* Applying Permutation */
+    let group_len = 5;
+    let mut space_cnt = 0;
+    for (col, _) in pbox {
+        for row in &plain_vec {
+            if col >= row.len() {
+                continue;
+            }
+
+            cipher_text.push(row[col]);
+
+            space_cnt += 1;
+            if space_cnt == group_len {
+                space_cnt = 0;
+                cipher_text.push(' ');
+            }
+        }
+    }
+
     cipher_text
 }
 
@@ -57,7 +76,7 @@ fn pbox_from_key(key: &String) -> Vec<usize> {
     //let mut key_vec: Vec<char> = key.chars().collect();
 
     for (i, c) in key.chars().enumerate() {
-        let mut char_val: usize = 1;
+        let mut char_val: usize = 0;
         for (j, k) in key.chars().enumerate() {
             if c > k {
                 char_val += 1;
