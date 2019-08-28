@@ -33,8 +33,49 @@ pub fn encrypt(plain_text: &String, depth: &usize) -> String {
 }
 
 pub fn decrypt(cipher_text: &String, depth: &usize) -> String {
-    let mut plain_text = String::from("Plain");
+    let cipher_vec: Vec<char> = cipher_text.chars().collect();
+    let mut rail_fence = vec![vec!['X'; cipher_vec.len()]; *depth];
 
+    /* Unroll the cipher text */
+    let mut l = 0;
+    for i in 0..rail_fence.len() {
+        let mut k = 0;
+        let mut going_down = true;
+        for j in 0..cipher_vec.len() {
+            if k == i {
+                rail_fence[i][j] = cipher_vec[l];
+                l += 1;
+            }
+
+            if (k == 0 && !going_down) || (k == depth - 1 && going_down) {
+                going_down = !going_down;
+            }
+
+            if going_down {
+                k += 1;
+            } else {
+                k -= 1;
+            }
+        }
+    }
+
+    /* Collect the plain text */
+    let mut plain_text = String::new();
+    let mut k = 0;
+    let mut going_down = true;
+    for j in 0..cipher_vec.len() {
+        plain_text.push(rail_fence[k][j]);
+
+        if (k == 0 && !going_down) || (k == depth - 1 && going_down) {
+            going_down = !going_down;
+        }
+
+        if going_down {
+            k += 1;
+        } else {
+            k -= 1;
+        }
+    }
     plain_text
 }
 
