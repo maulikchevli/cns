@@ -42,8 +42,53 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
 }
 
 pub fn decrypt(cipher_text: &String, key: &String) -> String {
-    let mut plain_text = String::from(cipher_text);
+    let key_len = key.len();
 
+    let col_pbox: Vec<usize> = pbox_from_key(key);
+    let mut pbox: Vec<(usize, usize)> = Vec::new();
+    for (i, x) in col_pbox.iter().enumerate() {
+        pbox.push((i, *x));
+    }
+    pbox.sort_by_key(|a| a.1);
+
+    for (a, b) in &pbox {
+        println!("{} {}", a, b);
+    }
+
+    let mut cipher_vec: Vec<char> = Vec::new();
+    for c in cipher_text.chars() {
+        if (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') {
+            continue;
+        }
+        cipher_vec.push(c);
+    }
+    let num_row = (cipher_vec.len() as f64 / key_len as f64).ceil() as usize;
+    let last_row_size = key_len - (num_row * key_len - cipher_vec.len());
+
+    let mut plain_vec: Vec<Vec<char>> = Vec::new();
+    for i in 0..num_row-1 {
+        plain_vec.push(vec!['X'; key_len]);
+    }
+    plain_vec.push(vec!['X'; last_row_size]);
+
+    let mut k = 0;
+    for (col, _) in pbox {
+        for i in 0..plain_vec.len() {
+            if col >= plain_vec[i].len() {
+                continue;
+            }
+
+            plain_vec[i][col] = cipher_vec[k];
+            k += 1;
+        }
+    }
+
+    let mut plain_text = String::new();
+    for row in plain_vec {
+        for c in row {
+            plain_text.push(c);
+        }
+    }
     plain_text
 }
 
