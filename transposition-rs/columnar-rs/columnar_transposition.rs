@@ -1,5 +1,5 @@
 pub fn encrypt(plain_text: &String, key: &String) -> String {
-    let mut cipher_text = String::from(plain_text);
+    let mut cipher_text = String::new();
 
     let key_len = key.len();
 
