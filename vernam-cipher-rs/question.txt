@@ -8,3 +8,4 @@ Encryption: Plaintext XOR Key
 Write output - write cipher text in binary code in a file
 Decryption - Ciphertext XOR Key
 Write Output - Convert decrypted binary code in ASCII and write in a file
+
