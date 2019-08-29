@@ -37,6 +37,7 @@ fn encrypt_playfair() {
     let mut f = File::open(file_name).expect("Unable to open file");
     let mut plain_text = String::new();
     f.read_to_string(&mut plain_text).unwrap();
+    let plain_text = plain_text.trim().to_string();
 
     let mut key = String::new();
     println!("Enter Key :");
@@ -60,6 +61,7 @@ fn decrypt_playfair() {
     let mut f = File::open(file_name).expect("Unable to open file");
     let mut cipher_text = String::new();
     f.read_to_string(&mut cipher_text).unwrap();
+    let cipher_text = cipher_text.trim().to_string();
 
     let mut key = String::new();
     println!("Enter Key :");

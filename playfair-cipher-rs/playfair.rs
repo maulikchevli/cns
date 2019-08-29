@@ -38,6 +38,11 @@ pub fn encrypt(plain_text: &String, key: &String) -> String {
 }
 
 pub fn decrypt(cipher_text: &String, key: &String) -> String {
+    if cipher_text.len() % 2 ==  1 {
+        println!("Cipher of odd length is not possible!");
+        return "error".to_string();
+    }
+
     let table: [[char; 5]; 5] = generate_table(key, true);
     let mut paired_cipher_text: Vec<char> = Vec::new();
     for x in cipher_text.to_uppercase().chars() {
