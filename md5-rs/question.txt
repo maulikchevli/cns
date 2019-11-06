@@ -1,0 +1,13 @@
+Implement MD5 as below:
+
+Plaintext block size=512 bits. For each step, 32 bits would be used from the block.
+
+rounds= 1 (16 steps) . implement only 1 round. No need to implement 4 rounds.
+
+buffers = 4 (each of size 32 bits)
+
+In each step use plain text from each block, 4 buffers and constant values.
+
+Initialize the buffer values using existing constant values.
+
+Message digest( buffers) of 512 block would be provided as initial buffers for the next 512 plain text block.
