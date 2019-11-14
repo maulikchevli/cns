@@ -27,10 +27,23 @@ def md5(message):
     
     message = bytearray(message) #copy our input into a mutable buffer
     orig_len_in_bits = (8 * len(message)) & 0xffffffffffffffff
+    #orig_len_in_bits = (len(message)) & 0xffffffffffffffff
+    #orig_len_in_bits = len(message)
+    #print("Orig len: ", orig_len_in_bits)
     message.append(0x80)
     while len(message)%64 != 56:
+    #print(len(message))
+    #message.append(0x1)
+    #print(message)
+    #print(len(message))
+    #while len(message)%512 != 448:
         message.append(0)
-        message += orig_len_in_bits.to_bytes(8, byteorder='little')
+
+    #print(len(message))
+    message += orig_len_in_bits.to_bytes(8, byteorder='little')
+    #print("orig: ", orig_len_in_bits.to_bytes(64, byteorder='little'))
+    #print(len(message))
+    #print(message)
         
     hash_pieces = init_values[:]
     
@@ -54,8 +67,7 @@ def md5_to_hex(digest):
     return '{:032x}'.format(int.from_bytes(raw, byteorder='big'))
 
 if __name__=='__main__':
-    demo = [b"", b"a", b"abc", b"message digest", b"abcdefghijklmnopqrstuvwxyz",
-            b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-            b"12345678901234567890123456789012345678901234567890123456789012345678901234567890"]
+    demo = [b"", 
+            b"The quick brown fox jumps over the lazy dog", b"The quick brown fox jumps over the lazy dog."]
     for message in demo:
         print(md5_to_hex(md5(message)),' <= "',message.decode('ascii'),'"', sep='')
