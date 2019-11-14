@@ -8,10 +8,12 @@ void decryption();	//decrypts the message
 void getKeyMessage();	//gets key and message from user
 void inverse();		//finds inverse of key matrix
  
-void main() {
+int main() {
 	getKeyMessage();
 	encryption();
 	decryption();
+
+	return 0;
 }
  
 void encryption() {
@@ -57,7 +59,7 @@ void getKeyMessage() {
 			c[i][j] = a[i][j];
 		}
 	
-	printf("\nEnter a 3 letter string: ");
+	printf("\nEnter a string: ");
 	scanf("%s", msg);
 	
 	for(i = 0; i < 3; i++)
